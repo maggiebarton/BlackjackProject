@@ -1,11 +1,11 @@
 # Blackjack Project
 
-##Overview
+## Overview
 
-##Lessons Learned
+## Lessons Learned
 
-##Technologies Used
--Java
--Eclipse
--Git
--GitHub
+## Technologies Used
+- Java
+- Eclipse
+- Git
+- GitHub

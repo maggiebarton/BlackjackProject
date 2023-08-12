@@ -28,5 +28,10 @@ public class Deck {
 	public Card dealCard() {
 		return deck.remove(0);
 	}
+	
+	public void dealCard(Hand hand) {
+		
+	}
+
 
 }
