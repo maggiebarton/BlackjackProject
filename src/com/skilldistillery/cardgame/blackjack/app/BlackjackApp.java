@@ -18,13 +18,16 @@ public class BlackjackApp {
 	}
 
 	public void run() {
-
-		System.out.println("Welcome to Blackjack!");
+		System.out.println("-------------------------------------");
+		System.out.println("--- \u2661 \u2662 Welcome to Blackjack! \u2664 \u2667 ---");
+		System.out.println("-------------------------------------");
+		
 		System.out.println("Press '1' to play or '2' to quit.");
-		int gameChoice = sc.nextInt();
+		System.out.print("Choose: ");
+		int userChoice = sc.nextInt();
 		sc.nextLine(); // flush
 
-		switch (gameChoice) {
+		switch (userChoice) {
 		case 1:
 			playBlackjack();
 			break;
@@ -46,47 +49,58 @@ public class BlackjackApp {
 	}
 
 	public void startGame() {
-
 		// dealer gets a new deck and shuffles
+		System.out.println();
+		System.out.println("Shuffling cards...");
 		dealer.setupGame();
 
 		// dealer deals initial cards to respective hands and players add them to hands
+		System.out.println("Dealing cards...");
 		player.addCard(dealer.dealCard(player.getHand()));
-		dealer.addCard(dealer.dealCard(player.getHand()));
+		dealer.addCard(dealer.dealCard(dealer.getHand()));
 		player.addCard(dealer.dealCard(player.getHand()));
-		dealer.addCard(dealer.dealCard(player.getHand()));
-		checkBlackjack(player);
+		dealer.addCard(dealer.dealCard(dealer.getHand()));
 
 	}
 
 	public void playerTurn() {
+		System.out.println();
+		System.out.println("-------------------------------------");
+		System.out.println("-------- \u2661 \u2662 PLAYER TURN \u2664 \u2667 --------");
+		System.out.println("-------------------------------------");
 		System.out.println("Dealer showing " + dealer.initialShow() + "\t Value: " + dealer.initialShow().getValue());
 		System.out.println();
 		System.out.println("Player " + player.getHand() + "\t Value: " + player.getHand().getHandValue());
+		if (((BlackjackHand) player.getHand()).isBlackjack() && dealer.getHand().getHandValue() != 21) {
+			System.out.println("Blackjack!");
+		} else {
 
-		while (player.getHand().getHandValue() < 21) {
-			System.out.println("Would you like to HIT or STAND?");
-			String userChoice = sc.nextLine();
-			if (userChoice.toUpperCase().equals("HIT")) {
-				hit(player);
-				System.out.println("Player " + player.getHand() + "\t Value: " + player.getHand().getHandValue());
-				checkBlackjack(player);
-				checkBust(player);
-			}
-			if (userChoice.toUpperCase().equals("STAND")) {
-				dealerTurn();
-				break;
+			while (player.getHand().getHandValue() < 21) {
+				System.out.println("Would you like to 'HIT' or 'STAND'?");
+				String userChoice = sc.nextLine();
+				if (userChoice.toUpperCase().equals("HIT")) {
+					hit(player);
+					System.out.println("Player " + player.getHand() + "\t Value: " + player.getHand().getHandValue());
+					checkBust(player);
+				}
+				if (userChoice.toUpperCase().equals("STAND")) {
+					dealerTurn();
+					break;
+				}
 			}
 		}
 	}
 
 	public void dealerTurn() {
+		System.out.println();
+		System.out.println("-------------------------------------");
+		System.out.println("-------- \u2661 \u2662 DEALER TURN \u2664 \u2667 --------");
+		System.out.println("-------------------------------------");
 		System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
 		while (dealer.getHand().getHandValue() < 17) {
 			System.out.println("Dealer hits.");
 			hit(dealer);
 			System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
-			checkBlackjack(dealer);
 			checkBust(dealer);
 			if (dealer.getHand().getHandValue() >= 17 && dealer.getHand().getHandValue() <= 20) {
 				System.out.println("Dealer stands.");
@@ -97,7 +111,9 @@ public class BlackjackApp {
 
 	public void displayWinner() {
 		System.out.println();
-		System.out.println("RESULTS:");
+		System.out.println("-------------------------------------");
+		System.out.println("---------- \u2661 \u2662 RESULTS \u2664 \u2667 ----------");
+		System.out.println("-------------------------------------");
 		System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
 		System.out.println("Player " + player.getHand() + "\t Value: " + player.getHand().getHandValue());
 
@@ -117,11 +133,29 @@ public class BlackjackApp {
 		} else if (dealer.getHand().getHandValue() == player.getHand().getHandValue()) {
 			System.out.println("Push!");
 		}
+		System.out.println();
+		System.out.println("Would you like to play again? Press '1' to play or '2' to quit.");
+		System.out.print("Choose: ");
+		int userChoice = sc.nextInt();
+		sc.nextLine(); // flush
 
+		switch (userChoice) {
+		case 1:
+			player.getHand().clear();
+			dealer.getHand().clear();
+			playBlackjack();
+			break;
+		case 2:
+			System.out.println("Thanks for stopping by the table. Goodbye!");
+			break;
+		default:
+			System.out.println("Invalid Input. Please try again.");
+			run();
+			break;
+
+		}
 
 	}
-
-
 
 	public void checkBlackjack(Player player) {
 		if (((BlackjackHand) player.getHand()).isBlackjack()) {

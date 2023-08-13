@@ -4,11 +4,11 @@ public class Dealer extends Player {
 	private Deck deck;
 
 	public Dealer() {
+		deck = new Deck();
 
 	}
 	
 	public void setupGame () {
-		deck = new Deck();
 		deck.shuffle();
 	}
 
