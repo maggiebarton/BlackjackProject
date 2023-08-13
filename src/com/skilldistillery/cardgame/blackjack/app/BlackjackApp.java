@@ -20,11 +20,29 @@ public class BlackjackApp {
 	public void run() {
 
 		System.out.println("Welcome to Blackjack!");
+		System.out.println("Press '1' to play or '2' to quit.");
+		int gameChoice = sc.nextInt();
+		sc.nextLine(); // flush
 
+		switch (gameChoice) {
+		case 1:
+			playBlackjack();
+			break;
+		case 2:
+			System.out.println("Thanks for stopping by the table. Goodbye!");
+			break;
+		default:
+			System.out.println("Invalid Input. Please try again.");
+			run();
+			break;
+
+		}
+	}
+
+	public void playBlackjack() {
 		startGame();
 		playerTurn();
 		displayWinner();
-
 	}
 
 	public void startGame() {
@@ -38,6 +56,7 @@ public class BlackjackApp {
 		player.addCard(dealer.dealCard(player.getHand()));
 		dealer.addCard(dealer.dealCard(player.getHand()));
 		checkBlackjack(player);
+
 	}
 
 	public void playerTurn() {
@@ -61,6 +80,49 @@ public class BlackjackApp {
 		}
 	}
 
+	public void dealerTurn() {
+		System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
+		while (dealer.getHand().getHandValue() < 17) {
+			System.out.println("Dealer hits.");
+			hit(dealer);
+			System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
+			checkBlackjack(dealer);
+			checkBust(dealer);
+			if (dealer.getHand().getHandValue() >= 17 && dealer.getHand().getHandValue() <= 20) {
+				System.out.println("Dealer stands.");
+			}
+		}
+
+	}
+
+	public void displayWinner() {
+		System.out.println();
+		System.out.println("RESULTS:");
+		System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
+		System.out.println("Player " + player.getHand() + "\t Value: " + player.getHand().getHandValue());
+
+		if (dealer.getHand().getHandValue() > player.getHand().getHandValue() && dealer.getHand().getHandValue() < 22) {
+			System.out.println("Dealer wins!");
+
+		} else if (dealer.getHand().getHandValue() < 22 && player.getHand().getHandValue() >= 22) {
+			System.out.println("Dealer wins!");
+
+		} else if (dealer.getHand().getHandValue() < player.getHand().getHandValue()
+				&& player.getHand().getHandValue() < 22) {
+			System.out.println("Player wins!");
+
+		} else if (dealer.getHand().getHandValue() >= 22 && player.getHand().getHandValue() < 22) {
+			System.out.println("Player wins!");
+
+		} else if (dealer.getHand().getHandValue() == player.getHand().getHandValue()) {
+			System.out.println("Push!");
+		}
+
+
+	}
+
+
+
 	public void checkBlackjack(Player player) {
 		if (((BlackjackHand) player.getHand()).isBlackjack()) {
 			System.out.println("Blackjack!");
@@ -77,26 +139,6 @@ public class BlackjackApp {
 
 	public void hit(Player player) {
 		player.addCard(dealer.dealCard(player.getHand()));
-	}
-
-	public void dealerTurn() {
-		System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
-		while (dealer.getHand().getHandValue() < 17) {
-			System.out.println("Dealer hits.");
-			hit(dealer);
-			System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
-		}
-		if (dealer.getHand().getHandValue() >= 17 && dealer.getHand().getHandValue() <= 20) {
-			System.out.println("Dealer stands.");
-		}
-
-		if (dealer.getHand().getHandValue() > 21) {
-			System.out.println("BUST!");
-		}
-	}
-
-	public void displayWinner() {
-
 	}
 
 }
