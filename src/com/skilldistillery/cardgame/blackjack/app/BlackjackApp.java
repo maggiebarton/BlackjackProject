@@ -21,7 +21,7 @@ public class BlackjackApp {
 		System.out.println("-------------------------------------");
 		System.out.println("--- \u2661 \u2662 Welcome to Blackjack! \u2664 \u2667 ---");
 		System.out.println("-------------------------------------");
-		
+
 		System.out.println("Press '1' to play or '2' to quit.");
 		System.out.print("Choose: ");
 		int userChoice = sc.nextInt();
@@ -75,7 +75,7 @@ public class BlackjackApp {
 			System.out.println("Blackjack!");
 		} else {
 
-			while (player.getHand().getHandValue() < 21) {
+			while (player.getHand().getHandValue() <= 21) {
 				System.out.println("Would you like to 'HIT' or 'STAND'?");
 				String userChoice = sc.nextLine();
 				if (userChoice.toUpperCase().equals("HIT")) {
@@ -97,16 +97,21 @@ public class BlackjackApp {
 		System.out.println("-------- \u2661 \u2662 DEALER TURN \u2664 \u2667 --------");
 		System.out.println("-------------------------------------");
 		System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
-		while (dealer.getHand().getHandValue() < 17) {
-			System.out.println("Dealer hits.");
-			hit(dealer);
-			System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
-			checkBust(dealer);
-			if (dealer.getHand().getHandValue() >= 17 && dealer.getHand().getHandValue() <= 20) {
-				System.out.println("Dealer stands.");
-			}
-		}
+		if (dealer.getHand().getHandValue() >= 17 && dealer.getHand().getHandValue() <= 20) {
+			System.out.println("Dealer stands.");
+		} else {
+			while (dealer.getHand().getHandValue() < 17) {
+				System.out.println("Dealer hits.");
+				hit(dealer);
+				System.out.println("Dealer " + dealer.getHand() + "\t Value: " + dealer.getHand().getHandValue());
+				checkBust(dealer);
+				if (dealer.getHand().getHandValue() >= 17 && dealer.getHand().getHandValue() <= 21) {
+					System.out.println("Dealer stands.");
+				}
 
+			}
+
+		}
 	}
 
 	public void displayWinner() {
@@ -152,14 +157,6 @@ public class BlackjackApp {
 			System.out.println("Invalid Input. Please try again.");
 			run();
 			break;
-
-		}
-
-	}
-
-	public void checkBlackjack(Player player) {
-		if (((BlackjackHand) player.getHand()).isBlackjack()) {
-			System.out.println("Blackjack!");
 
 		}
 
